@@ -1,22 +1,21 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function Home() {
+export default function Home({ username }) {
+  const { data: session } = useSession();
+  console.log(username);
+
+  if (session) {
+    return (
+      <>
+        Signed in as {session.user.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    );
+  }
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Its a next auth demo app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1>Hello From IntelliByte 🔥 </h1>
-      </main>
-
-      <footer className={styles.footer}>
-        &copy; All rights reserved to IntelliByte 🔥
-      </footer>
-    </div>
+    <>
+      Not signed in <br />
+      <button onClick={() => signIn()}>Sign in</button>
+    </>
   );
 }
